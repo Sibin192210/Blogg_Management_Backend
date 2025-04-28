@@ -56,31 +56,34 @@ const loginDetails = (req, res) => {
     });
 };
 
-
-// Check if email exists
 const checkEmail = (req, res) => {
   const { email } = req.body;
-  userschema.findOne({ email }).then((user) => {
-    if (!user) {
-      return res.json({ success: false, msg: "Invalid email" });
-    }
-    res.json({ success: true, msg: "Email exists" });
-  }).catch((err) => {
-    res.status(500).json({ success: false, msg: "Server error" });
-  });
+  userschema
+    .findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return res.json({ success: false, msg: "Invalid email" });
+      }
+      res.json({ success: true, msg: "Email exists" });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, msg: "Server error" });
+    });
 };
 
-// Update password
 const updatePassword = (req, res) => {
   const { email, password } = req.body;
-  userschema.findOneAndUpdate({ email }, { password }).then((result) => {
-    if (!result) {
-      return res.json({ success: false, msg: "Email not found" });
-    }
-    res.json({ success: true, msg: "Password updated" });
-  }).catch((err) => {
-    res.status(500).json({ success: false, msg: "Error updating password" });
-  });
+  userschema
+    .findOneAndUpdate({ email }, { password })
+    .then((result) => {
+      if (!result) {
+        return res.json({ success: false, msg: "Email not found" });
+      }
+      res.json({ success: true, msg: "Password updated" });
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, msg: "Error updating password" });
+    });
 };
 
-module.exports = { SignupDetails, loginDetails,checkEmail,updatePassword };
+module.exports = { SignupDetails, loginDetails, checkEmail, updatePassword };
