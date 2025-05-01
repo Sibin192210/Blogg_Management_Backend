@@ -9,7 +9,6 @@ const Router = require("./Router");
 app.use(bodyparser.json());
 app.use(cors());
 
-// Serve uploaded images
 app.use("/Blogimages", express.static(__dirname + "/Blogimages"));
 
 
