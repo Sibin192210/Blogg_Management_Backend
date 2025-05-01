@@ -1,58 +1,54 @@
-const multer = require('multer');
-const Blog = require('./Blogschema');
+const multer = require("multer");
+const blogschema = require("./Blogschema");
 
+// Storage setup
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './Blog_images');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    }
+  destination: function (req, file, cb) {
+    cb(null, "./Blogimages");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
 });
 
-const upload = multer({ storage: storage });
-
-const uploadFields = upload.fields([
-    { name: 'thumbnailimage', maxCount: 1 },
-    { name: 'corosal1', maxCount: 1 },
-    { name: 'corosal2', maxCount: 1 },
-    { name: 'corosal3', maxCount: 1 }
+// Multer upload for multiple specific files
+const upload = multer({ storage: storage }).fields([
+  { name: "thumbnailimage", maxCount: 1 },
+  { name: "corosal1", maxCount: 1 },
+  { name: "corosal2", maxCount: 1 },
+  { name: "corosal3", maxCount: 1 },
 ]);
 
 const addBlogDetails = (req, res) => {
-    const blog = new Blog({
-        mainheading: req.body.mainheading,
-        authorname: req.body.authorname,
-        thumbnailimage: req.files.thumbnailimage,
-        subheading1: req.body.subheading1,
-        introduction: req.body.introduction,
-        subheading2: req.body.subheading2,
-        story2: req.body.story2,
-        story2a: req.body.story2a,
-        corosal1: req.files.corosal1,
-        corosal2: req.files.corosal2,
-        corosal3: req.files.corosal3,
-        subheading3: req.body.subheading3,
-        story3: req.body.story3,
-        subheading4: req.body.subheading4,
-        story4: req.body.story4,
-        story4a: req.body.story4a
-    });
+  const files = req.files;
 
-    blog.save()
-        .then(result => {
-            res.json({
-                msg: "Blog details saved successfully",
-                data: result
-            });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                msg: "Something went wrong",
-                error: err.message
-            });
-        });
+  const blog = new blogschema({
+    mainheading: req.body.mainheading,
+    authorname: req.body.authorname,
+    thumbnailimage: files?.thumbnailimage?.[0]?.filename || "",
+    corosal1: files?.corosal1?.[0]?.filename || "",
+    corosal2: files?.corosal2?.[0]?.filename || "",
+    corosal3: files?.corosal3?.[0]?.filename || "",
+    subheading1: req.body.subheading1,
+    introduction: req.body.introduction,
+    subheading2: req.body.subheading2,
+    story2: req.body.story2,
+    story2a: req.body.story2a,
+    subheading3: req.body.subheading3,
+    story3: req.body.story3,
+    subheading4: req.body.subheading4,
+    story4: req.body.story4,
+    story4a: req.body.story4a,
+  });
+
+  blog.save()
+    .then((result) => {
+      res.json({ msg: "Blog saved successfully", data: result });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ msg: "Error saving blog", error: err.message });
+    });
 };
 
-module.exports = { upload: uploadFields, addBlogDetails };
+module.exports = { upload, addBlogDetails };
