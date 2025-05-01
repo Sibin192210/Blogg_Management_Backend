@@ -10,5 +10,5 @@ Router.post("/checkEmail", Usercontrol.checkEmail);
 Router.post("/updatePassword", Usercontrol.updatePassword);
 
 Router.post("/addBlogDetails", Blogcontrol.upload, Blogcontrol.addBlogDetails);
-//jsgsyuguy
+
 module.exports = Router;

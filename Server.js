@@ -1,14 +1,20 @@
-const express = require('express')
-const app = express()
-const bodyparser = require('body-parser')
-const db = require("./DbConnection")
-const cors =require("cors")
-app.use(bodyparser.json())
-const Router = require("./Router")
-app.use(express.static(`${ __dirname } / upload`));
-app.use(cors())
-app.use("/",Router)
+const express = require('express');
+const app = express();
+const bodyparser = require('body-parser');
+const cors = require("cors");
+
+require("./DbConnection");
+const Router = require("./Router");
+
+app.use(bodyparser.json());
+app.use(cors());
+
+// Serve uploaded images
+app.use("/Blogimages", express.static(__dirname + "/Blogimages"));
+
+
+app.use("/", Router);
 
 app.listen(3003, function () {
-    console.log('succesfully port runing')
-})
+  console.log('Successfully running on port 3003');
+});

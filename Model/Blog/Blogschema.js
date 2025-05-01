@@ -1,69 +1,22 @@
-// blogSchema.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// Define your blog schema
 const blogSchema = new mongoose.Schema({
-    mainheading: {
-        type: String,
-        required: true
-    },
-    authorname: {
-        type: String,
-        required: true
-    },
-    thumbnailimage: {
-        type: Object,
-    },
-    subheading1: {
-        type: String,
-        required: true
-    },
-    introduction: {
-        type: String,
-        required: true
-    },
-    subheading2: {
-        type: String,
-        required: true
-    },
-    story2: {
-        type: String,
-        required: true
-    },
-    story2a: {
-        type: String,
-        required: true
-    },
-    corosal1: {
-        type: Object,
-    },
-    corosal2: {
-        type: Object,
-    },
-    corosal3: {
-        type: Object,
-    },
-    subheading3: {
-        type: String,
-        required: true
-    },
-    story3: {
-        type: String,
-        required: true
-    },
-    subheading4: {
-        type: String,
-        required: true
-    },
-    story4: {
-        type: String,
-        required: true
-    },
-    story4a: {
-        type: String,
-        required: true
-    }
+  mainheading: { type: String, required: true },
+  authorname: { type: String, required: true },
+  thumbnailimage: { type: String },
+  corosal1: { type: String },
+  corosal2: { type: String },
+  corosal3: { type: String },
+  subheading1: { type: String },
+  introduction: { type: String },
+  subheading2: { type: String },
+  story2: { type: String },
+  story2a: { type: String },
+  subheading3: { type: String },
+  story3: { type: String },
+  subheading4: { type: String },
+  story4: { type: String },
+  story4a: { type: String },
 });
 
-// Export the model
 module.exports = mongoose.model("Blogdetails", blogSchema);
