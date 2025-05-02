@@ -19,6 +19,7 @@ const upload = multer({ storage: storage }).fields([
   { name: "corosal3", maxCount: 1 },
 ]);
 
+// Add blog
 const addBlogDetails = (req, res) => {
   const files = req.files;
 
@@ -46,9 +47,55 @@ const addBlogDetails = (req, res) => {
       res.json({ msg: "Blog saved successfully", data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       res.status(500).json({ msg: "Error saving blog", error: err.message });
     });
 };
 
-module.exports = { upload, addBlogDetails };
+// View all blogs
+const viewAllBlog = (req, res) => {
+  blogschema.find()
+    .then((result) => {
+      res.json(result); // Just send the array, easier for frontend
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ msg: "Error fetching blogs", error: err.message });
+    });
+};
+
+
+//to view single blog
+// View one blog by ID
+const viewOneBlog = (req, res) => {
+  const blogId = req.params.id;
+  
+  blogschema.findById(blogId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({ msg: "Blog not found" });
+      }
+      res.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ msg: "Error fetching blog", error: err.message });
+    });
+};
+
+// Delete blog by ID
+const deleteBlog = async (req, res) => {
+  try {
+    const blog = await blogschema.findByIdAndDelete(req.params.id);
+    if (!blog) return res.status(404).json({ msg: 'Blog not found' });
+    res.json({ msg: 'Blog deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error', error: err.message });
+  }
+};
+
+
+
+
+module.exports = { upload, addBlogDetails, viewAllBlog,viewOneBlog,deleteBlog};
